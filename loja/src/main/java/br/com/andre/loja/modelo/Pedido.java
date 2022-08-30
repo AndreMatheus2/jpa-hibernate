@@ -24,7 +24,7 @@ public class Pedido {
 	private LocalDate date = LocalDate.now();
 	@ManyToOne
 	private Cliente cliente;
-	@OneToMany
+	@OneToMany(mappedBy = "pedido")
 	private List<ItemPedido> itens;
 	
 	
@@ -35,6 +35,11 @@ public class Pedido {
 	public Pedido(Cliente cliente) {
 		super();
 		this.cliente = cliente;
+	}
+	
+	public void adicionarItem(ItemPedido item) {
+		item.setPedido(this);
+		this.itens.add(item);
 	}
 
 	public BigDecimal getValorTotal() {

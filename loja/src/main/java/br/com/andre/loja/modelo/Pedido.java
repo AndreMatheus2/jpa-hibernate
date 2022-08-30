@@ -2,6 +2,7 @@ package br.com.andre.loja.modelo;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -28,7 +29,7 @@ public class Pedido {
 	@ManyToOne
 	private Cliente cliente;
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
-	private List<ItemPedido> itens;
+	private List<ItemPedido> itens = new ArrayList<>();
 	
 	
 	

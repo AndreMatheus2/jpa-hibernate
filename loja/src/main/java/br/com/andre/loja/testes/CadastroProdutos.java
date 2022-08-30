@@ -13,25 +13,23 @@ import br.com.andre.loja.util.JpaUtil;
 public class CadastroProdutos {
 
 	public static void main(String[] args) {
-		
+
 		Categoria celulares = new Categoria("CELULARES");
-		
+
 		Produto celular = new Produto("Xiaomi", "Verde", new BigDecimal("800"), celulares);
-		
-		
+
 		EntityManager em = JpaUtil.getEntityManager();
 
 		ProdutoDao produtoDao = new ProdutoDao(em);
 		CategoriaDao categoriaDao = new CategoriaDao(em);
 
-		
 		em.getTransaction().begin();
 		categoriaDao.cadastrar(celulares);
 		produtoDao.cadastrar(celular);
 		celulares.setNome("XPTO");
 		em.flush();
 		em.clear();
-		
+
 		celulares = em.merge(celulares);
 		celulares.setNome("ALURA");
 		em.flush();

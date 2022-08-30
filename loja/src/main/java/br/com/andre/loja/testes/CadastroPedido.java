@@ -1,6 +1,7 @@
 package br.com.andre.loja.testes;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 
@@ -14,6 +15,7 @@ import br.com.andre.loja.modelo.ItemPedido;
 import br.com.andre.loja.modelo.Pedido;
 import br.com.andre.loja.modelo.Produto;
 import br.com.andre.loja.util.JpaUtil;
+import br.com.andre.loja.vo.RelatorioDeVendasVo;
 
 public class CadastroPedido {
 
@@ -25,28 +27,27 @@ public class CadastroPedido {
 		Produto produto = produtoDao.buscarPorId(1l);
 		Cliente cliente = clienteDao.buscarPorId(1l);
 		em.getTransaction().begin();
-		
+
 		Pedido pedido = new Pedido(cliente);
 		pedido.adicionarItem(new ItemPedido(10, pedido, produto));
-		
+
 		PedidoDao pedidoDao = new PedidoDao(em);
 		pedidoDao.cadastrar(pedido);
-		
-		
-		
+
 		em.getTransaction().commit();
-		
+
 		BigDecimal totalVendido = pedidoDao.valorTotalVendido();
 		System.out.println("valor total: " + totalVendido);
-		
-	}	
 
-	private static void popularBancoDeDados() {	
+		List<RelatorioDeVendasVo> relatorio = pedidoDao.relatorioDeVendas();
+		relatorio.forEach(System.out::println);
+	}
+
+	private static void popularBancoDeDados() {
 		Categoria celulares = new Categoria("CELULARES");
 
 		Produto celular = new Produto("Xiaomi", "Verde", new BigDecimal("800"), celulares);
 		Cliente cliente = new Cliente("Andre", "1234");
-
 
 		EntityManager em = JpaUtil.getEntityManager();
 

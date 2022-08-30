@@ -3,8 +3,6 @@ package br.com.andre.loja.testes;
 import java.math.BigDecimal;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 import br.com.andre.loja.dao.CategoriaDao;
 import br.com.andre.loja.dao.ProdutoDao;
@@ -30,8 +28,13 @@ public class CadastroProdutos {
 		em.getTransaction().begin();
 		categoriaDao.cadastrar(celulares);
 		produtoDao.cadastrar(celular);
-		em.getTransaction().commit();
-		em.close();
+		celulares.setNome("XPTO");
+		em.flush();
+		em.clear();
+		
+		celulares = em.merge(celulares);
+		celulares.setNome("ALURA");
+		em.flush();
 	}
 
 }
